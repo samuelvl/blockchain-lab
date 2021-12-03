@@ -27,7 +27,7 @@ func FirstBlock() *Block {
 	return NewBlock("Genesis", []byte{})
 }
 
-// ComputeHash will compute block's hash using the sha256 algorithm:
+// ComputeHash computes block's hash using the sha256 algorithm:
 // https://datatracker.ietf.org/doc/html/rfc6234
 func (b *Block) ComputeHash() {
 	// The payload is the concatenation of the block's data and the previous

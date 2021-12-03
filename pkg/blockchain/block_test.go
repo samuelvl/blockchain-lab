@@ -20,8 +20,9 @@ func TestNewBlock(t *testing.T) {
 	}{
 		{
 			block: Block{
-				Hash: b64ToHash("gd3I0kiy3M3T/dXoTwytYrCPLRC1f5qDHBNFHlxcgKU="),
-				Data: "Genesis",
+				Hash:     b64ToHash("gd3I0kiy3M3T/dXoTwytYrCPLRC1f5qDHBNFHlxcgKU="),
+				Data:     "Genesis",
+				PrevHash: []byte{},
 			},
 		},
 		{

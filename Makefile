@@ -62,3 +62,10 @@ build: ## Generate binaries.
 
 run: ## Run the app locally.
 	@sh -c '$(BIN_PATH)/$(BIN_NAME)'
+
+##@ Documentation
+.PHONY: docs
+
+docs: ## Generate documentation using gomarkdoc tool.
+	$(info • Generating code documentation...)
+	@gomarkdoc --output docs/CODE.md ./pkg/...

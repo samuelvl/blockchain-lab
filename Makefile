@@ -38,14 +38,18 @@ download-deps: ## Download dependencies in the vendor folder.
 deps: update-deps download-deps
 
 
-##@ Testing
+##@ Golang testing
+.PHONY: test
+
 test: ## Run unit tests.
 	$(info • Running unit tests...)
 	@go test -v -race ./pkg/...
 
 
-##@ Building
-build: deps ## Generate binaries.
+##@ Golang building
+.PHONY: build
+
+build: ## Generate binaries.
 	$(info • Generating $(BIN_NAME) binary...)
 	@go build \
 		-work \
@@ -53,6 +57,8 @@ build: deps ## Generate binaries.
 		-o $(BIN_PATH)/$(BIN_NAME)
 
 
-##@ Execution
+##@ Golang execution
+.PHONY: run
+
 run: ## Run the app locally.
 	@sh -c '$(BIN_PATH)/$(BIN_NAME)'

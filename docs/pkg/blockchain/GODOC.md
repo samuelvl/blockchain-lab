@@ -32,7 +32,7 @@ type Block struct {
 }
 ```
 
-### func [FirstBlock](<https://github.com/samuelvl/blockchain-lab/blob/main/pkg/blockchain/block.go#L34>)
+### func [FirstBlock](<https://github.com/samuelvl/blockchain-lab/blob/main/pkg/blockchain/block.go#L35>)
 
 ```go
 func FirstBlock() *Block
@@ -48,7 +48,7 @@ func NewBlock(data string, prevHash []byte) *Block
 
 NewBlock returns a block with its corresponding hash\.
 
-### func \(\*Block\) [ComputeHash](<https://github.com/samuelvl/blockchain-lab/blob/main/pkg/blockchain/block.go#L40>)
+### func \(\*Block\) [ComputeHash](<https://github.com/samuelvl/blockchain-lab/blob/main/pkg/blockchain/block.go#L41>)
 
 ```go
 func (b *Block) ComputeHash()
@@ -56,7 +56,7 @@ func (b *Block) ComputeHash()
 
 ComputeHash computes block's hash using the sha256 algorithm: https://datatracker.ietf.org/doc/html/rfc6234
 
-### func \(\*Block\) [Mine](<https://github.com/samuelvl/blockchain-lab/blob/main/pkg/blockchain/block.go#L54>)
+### func \(\*Block\) [Mine](<https://github.com/samuelvl/blockchain-lab/blob/main/pkg/blockchain/block.go#L55>)
 
 ```go
 func (b *Block) Mine() error
@@ -64,7 +64,7 @@ func (b *Block) Mine() error
 
 Mine will recompute the block's hash using the Proof of Work "hashcat" algorithm\.
 
-### func \(Block\) [String](<https://github.com/samuelvl/blockchain-lab/blob/main/pkg/blockchain/block.go#L66>)
+### func \(Block\) [String](<https://github.com/samuelvl/blockchain-lab/blob/main/pkg/blockchain/block.go#L67>)
 
 ```go
 func (b Block) String() string

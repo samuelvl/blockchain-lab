@@ -4,6 +4,8 @@ import (
 	"bytes"
 	"crypto/sha256"
 	"encoding/json"
+
+	"github.com/samuelvl/blockchain-lab/pkg/pow"
 )
 
 // Block represents the simplest element of the chain. It contains an string,
@@ -13,12 +15,19 @@ type Block struct {
 	Hash     []byte `json:"hash"`
 	Data     string `json:"data"`
 	PrevHash []byte `json:"prevHash"`
+	Nonce    int32  `json:"nonce"`
 }
 
 // NewBlock returns a block with its corresponding hash.
 func NewBlock(data string, prevHash []byte) *Block {
-	block := Block{[]byte{}, data, prevHash}
+	block := Block{
+		Hash:     []byte{},
+		Data:     data,
+		PrevHash: prevHash,
+		Nonce:    0,
+	}
 	block.ComputeHash()
+	block.Mine()
 	return &block
 }
 
@@ -39,6 +48,19 @@ func (b *Block) ComputeHash() {
 	// Set the hash value as the sha256 of the payload
 	hash := sha256.Sum256(payload)
 	b.Hash = hash[:]
+}
+
+// Mine will recompute the block's hash using the Proof of Work "hashcat"
+// algorithm.
+func (b *Block) Mine() error {
+	nonce, err := pow.FindNonce(b.Hash)
+	if err != nil {
+		return err
+	}
+	b.Hash = nonce.Payload
+	b.Nonce = nonce.Value
+
+	return nil
 }
 
 // String prints the block in json format.

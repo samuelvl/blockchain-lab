@@ -14,14 +14,16 @@ func TestAddBlock(t *testing.T) {
 		chain: Chain{
 			Blocks: []*Block{
 				{
-					Hash:     b64ToHash("gd3I0kiy3M3T/dXoTwytYrCPLRC1f5qDHBNFHlxcgKU="),
+					Hash:     b64ToBytes("AAAbYKPkOFcxWkh0z4iGQ20gkmRzC+9HuDRPynEPwhM="),
 					Data:     "Genesis",
 					PrevHash: []byte{},
+					Nonce:    668,
 				},
 				{
-					Hash:     b64ToHash("xL2OQM8Z7a5QloweIkbbBv45sxtX/j4/84h5HmqQxUE="),
+					Hash:     b64ToBytes("AACNcVOeoodFtxKewQsbSjmMNsSDtRzDNmedx1xaH3Y="),
 					Data:     "this is a testing block",
-					PrevHash: b64ToHash("gd3I0kiy3M3T/dXoTwytYrCPLRC1f5qDHBNFHlxcgKU="),
+					PrevHash: b64ToBytes("AAAbYKPkOFcxWkh0z4iGQ20gkmRzC+9HuDRPynEPwhM="),
+					Nonce:    157870,
 				},
 			},
 		},

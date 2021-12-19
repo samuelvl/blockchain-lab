@@ -15,11 +15,15 @@ Then, generate your first block:
 ```shell
 $ make run
 Block:
+Chain size is 4 blocks
+Block 0 is:
 {
-  "hash": "gd3I0kiy3M3T/dXoTwytYrCPLRC1f5qDHBNFHlxcgKU=",
+  "hash": "AAAbYKPkOFcxWkh0z4iGQ20gkmRzC+9HuDRPynEPwhM=",
   "data": "Genesis",
-  "prevHash": ""
+  "prevHash": "",
+  "nonce": 668
 }
+...
 ```
 
 ## Testing
@@ -36,4 +40,5 @@ $ make test
 ## References
 
 - https://github.com/nheingit/go-blockchain
+- https://jeiwan.net/posts/building-blockchain-in-go-part-1
 - https://github.com/stretchr/testify

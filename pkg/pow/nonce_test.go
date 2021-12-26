@@ -14,6 +14,37 @@ func b64ToBytes(s string) []byte {
 	return data
 }
 
+// TestInitTarget tests the initialization of a target.
+func TestInitTarget(t *testing.T) {
+	var tests = []struct {
+		difficulty int
+		target     string
+	}{
+		{
+			difficulty: 16,
+			target:     "0x1000000000000000000000000000000000000000000000000000000000000",
+		},
+		{
+			difficulty: 64,
+			target:     "0x1000000000000000000000000000000000000000000000000",
+		},
+		{
+			difficulty: 128,
+			target:     "0x100000000000000000000000000000000",
+		},
+		{
+			difficulty: 250,
+			target:     "0x40", // 0x1000000 binary
+		},
+	}
+
+	for _, test := range tests {
+		target := initTarget(test.difficulty)
+		targetHex := fmt.Sprintf("0x%x", target)
+		assert.Equal(t, test.target, targetHex)
+	}
+}
+
 // TestFindNonce tests the match of a nonce.
 func TestFindNonce(t *testing.T) {
 	var tests = []struct {
@@ -41,9 +72,4 @@ func TestFindNonce(t *testing.T) {
 		assert.Equal(t, test.nonce, *nonce)
 		assert.NoError(t, err)
 	}
-}
-
-func TestInitTarget(t *testing.T) {
-	target := initTarget(difficulty)
-	fmt.Println(target)
 }

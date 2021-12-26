@@ -40,10 +40,10 @@ func (n *Nonce) computePayload(data []byte) {
 	dataBigInt := new(big.Int).SetBytes(data)
 	nonceBigInt := big.NewInt(int64(n.Value))
 
-	// Create the mix data by adding the nonce to the original data
+	// Create the payload by adding the nonce to the original data
 	payloadBigInt := new(big.Int).Add(dataBigInt, nonceBigInt)
 
-	// Set the nonce data by applying the sha256 algorithm th the mix data
+	// Apply the sha256 algorithm to the payload
 	hash := sha256.Sum256(payloadBigInt.Bytes())
 	n.Payload = hash[:]
 }
@@ -66,7 +66,7 @@ func FindNonce(data []byte) (*Nonce, error) {
 		// create a new test number
 		nonce := newNonce(data, alpha)
 
-		// Is the target number bigger than the nonce payload?
+		// Is the nonce payload smaller than the target number?
 		if target.Cmp(new(big.Int).SetBytes(nonce.Payload)) > 0 {
 			return nonce, nil
 		}

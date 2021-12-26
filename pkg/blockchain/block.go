@@ -8,6 +8,10 @@ import (
 	"github.com/samuelvl/blockchain-lab/pkg/pow"
 )
 
+// Difficulty of the hashcash algorithm to compute the nonce. The closer to 256,
+// the harder to find a nonce.
+const Difficulty = 16
+
 // Block represents the simplest element of the chain. It contains an string,
 // its corresponding hash and the hash from the previous block.
 // The previous hash will be empty if it is the first block of the chain.
@@ -53,7 +57,7 @@ func (b *Block) ComputeHash() {
 // Mine will recompute the block's hash using the Proof of Work "hashcat"
 // algorithm.
 func (b *Block) Mine() error {
-	nonce, err := pow.FindNonce(b.Hash)
+	nonce, err := pow.FindNonce(b.Hash, Difficulty)
 	if err != nil {
 		return err
 	}

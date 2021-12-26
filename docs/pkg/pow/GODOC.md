@@ -10,7 +10,7 @@ import "github.com/samuelvl/blockchain-lab/pkg/pow"
 
 - [Variables](<#variables>)
 - [type Nonce](<#type-nonce>)
-  - [func FindNonce(data []byte) (*Nonce, error)](<#func-findnonce>)
+  - [func FindNonce(data []byte, difficulty uint) (*Nonce, error)](<#func-findnonce>)
   - [func (n Nonce) String() string](<#func-nonce-string>)
 
 
@@ -22,7 +22,7 @@ ErrNonceNotFound error when a nonce is not found\.
 var ErrNonceNotFound = errors.New("pow: nonce not found")
 ```
 
-## type [Nonce](<https://github.com/samuelvl/blockchain-lab/blob/main/pkg/pow/nonce.go#L21-L24>)
+## type [Nonce](<https://github.com/samuelvl/blockchain-lab/blob/main/pkg/pow/nonce.go#L17-L20>)
 
 Nonce is the first number that satisfies the hashcat algorithm:
 
@@ -35,15 +35,15 @@ type Nonce struct {
 }
 ```
 
-### func [FindNonce](<https://github.com/samuelvl/blockchain-lab/blob/main/pkg/pow/nonce.go#L59>)
+### func [FindNonce](<https://github.com/samuelvl/blockchain-lab/blob/main/pkg/pow/nonce.go#L55>)
 
 ```go
-func FindNonce(data []byte) (*Nonce, error)
+func FindNonce(data []byte, difficulty uint) (*Nonce, error)
 ```
 
 FindNonce will find the nonce as the number that satisfies the hashcash algorithm\.
 
-### func \(Nonce\) [String](<https://github.com/samuelvl/blockchain-lab/blob/main/pkg/pow/nonce.go#L79>)
+### func \(Nonce\) [String](<https://github.com/samuelvl/blockchain-lab/blob/main/pkg/pow/nonce.go#L75>)
 
 ```go
 func (n Nonce) String() string

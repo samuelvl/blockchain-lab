@@ -8,10 +8,6 @@ import (
 	"math/big"
 )
 
-// difficulty of the hashcash algorithm to compute the nonce. The closer to 256,
-// the harder to find a nonce.
-var difficulty = 16
-
 // ErrNonceNotFound error when a nonce is not found.
 var ErrNonceNotFound = errors.New("pow: nonce not found")
 
@@ -50,13 +46,13 @@ func (n *Nonce) computePayload(data []byte) {
 
 // initTarget will generate the hashcat target based on the difficulty
 // parameter.
-func initTarget(difficulty int) *big.Int {
+func initTarget(difficulty uint) *big.Int {
 	return new(big.Int).Lsh(big.NewInt(1), uint(256-difficulty))
 }
 
 // FindNonce will find the nonce as the number that satisfies the hashcash
 // algorithm.
-func FindNonce(data []byte) (*Nonce, error) {
+func FindNonce(data []byte, difficulty uint) (*Nonce, error) {
 	// Initialize the target
 	target := initTarget(difficulty)
 

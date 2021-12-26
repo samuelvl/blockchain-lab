@@ -17,7 +17,7 @@ func b64ToBytes(s string) []byte {
 // TestInitTarget tests the initialization of a target.
 func TestInitTarget(t *testing.T) {
 	var tests = []struct {
-		difficulty int
+		difficulty uint
 		target     string
 	}{
 		{
@@ -48,8 +48,9 @@ func TestInitTarget(t *testing.T) {
 // TestFindNonce tests the match of a nonce.
 func TestFindNonce(t *testing.T) {
 	var tests = []struct {
-		data  []byte
-		nonce Nonce
+		data       []byte
+		nonce      Nonce
+		difficulty uint
 	}{
 		{
 			data: b64ToBytes("gd3I0kiy3M3T/dXoTwytYrCPLRC1f5qDHBNFHlxcgKU="),
@@ -57,6 +58,7 @@ func TestFindNonce(t *testing.T) {
 				Value:   668,
 				Payload: b64ToBytes("AAAbYKPkOFcxWkh0z4iGQ20gkmRzC+9HuDRPynEPwhM="),
 			},
+			difficulty: 16,
 		},
 		{
 			data: b64ToBytes("xL2OQM8Z7a5QloweIkbbBv45sxtX/j4/84h5HmqQxUE="),
@@ -64,11 +66,12 @@ func TestFindNonce(t *testing.T) {
 				Value:   56666,
 				Payload: b64ToBytes("AACan9a7F7IwjPDPMmMy1sFaXag0hLflf/uquU9HrSo="),
 			},
+			difficulty: 16,
 		},
 	}
 
 	for _, test := range tests {
-		nonce, err := FindNonce(test.data)
+		nonce, err := FindNonce(test.data, test.difficulty)
 		assert.Equal(t, test.nonce, *nonce)
 		assert.NoError(t, err)
 	}

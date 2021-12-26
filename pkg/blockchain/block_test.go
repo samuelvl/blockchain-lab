@@ -13,6 +13,34 @@ func b64ToBytes(s string) []byte {
 	return hash
 }
 
+// TestComputeHash tests the resulting hash for a single block.
+func TestComputeHash(t *testing.T) {
+	var tests = []struct {
+		block Block
+		hash  []byte
+	}{
+		{
+			block: Block{
+				Data:     "Genesis",
+				PrevHash: []byte{},
+			},
+			hash: b64ToBytes("gd3I0kiy3M3T/dXoTwytYrCPLRC1f5qDHBNFHlxcgKU="),
+		},
+		{
+			block: Block{
+				Data:     "this is a testing block",
+				PrevHash: b64ToBytes("gd3I0kiy3M3T/dXoTwytYrCPLRC1f5qDHBNFHlxcgKU="),
+			},
+			hash: b64ToBytes("xL2OQM8Z7a5QloweIkbbBv45sxtX/j4/84h5HmqQxUE="),
+		},
+	}
+
+	for _, test := range tests {
+		test.block.ComputeHash()
+		assert.Equal(t, test.hash, test.block.Hash)
+	}
+}
+
 // TestNewBlock tests the creation of a new block.
 func TestNewBlock(t *testing.T) {
 	var tests = []struct {

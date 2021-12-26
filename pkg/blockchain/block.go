@@ -10,7 +10,7 @@ import (
 
 // Difficulty of the hashcash algorithm to compute the nonce. The closer to 256,
 // the harder to find a nonce.
-const Difficulty = 16
+const Difficulty uint = 16
 
 // Block represents the simplest element of the chain. It contains an string,
 // its corresponding hash and the hash from the previous block.

@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
@@ -42,7 +41,7 @@ func TestInitTarget(t *testing.T) {
 	for _, test := range tests {
 		target := initTarget(test.difficulty)
 		targetHex := fmt.Sprintf("0x%x", target)
-		assert.Equal(t, test.target, targetHex)
+		require.Equal(t, test.target, targetHex)
 	}
 }
 
@@ -73,7 +72,7 @@ func TestFindNonce(t *testing.T) {
 
 	for _, test := range tests {
 		nonce, err := FindNonce(test.data, test.difficulty)
-		assert.Equal(t, test.nonce, *nonce)
+		require.Equal(t, test.nonce, *nonce)
 		require.NoError(t, err)
 	}
 }

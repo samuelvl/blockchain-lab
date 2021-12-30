@@ -4,7 +4,6 @@ import (
 	"encoding/base64"
 	"testing"
 
-	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
@@ -38,7 +37,7 @@ func TestComputeHash(t *testing.T) {
 
 	for _, test := range tests {
 		test.block.ComputeHash()
-		assert.Equal(t, test.hash, test.block.Hash)
+		require.Equal(t, test.hash, test.block.Hash)
 	}
 }
 
@@ -67,7 +66,7 @@ func TestNewBlock(t *testing.T) {
 
 	for _, test := range tests {
 		block := NewBlock(test.block.Data, test.block.PrevHash)
-		assert.Equal(t, test.block, *block)
+		require.Equal(t, test.block, *block)
 	}
 }
 
@@ -96,6 +95,6 @@ func TestBlockSerialization(t *testing.T) {
 		deserializedBlock.Deserialize(serializedBlock)
 
 		// Compare the deserialize with the original one
-		assert.Equal(t, test.block, deserializedBlock)
+		require.Equal(t, test.block, deserializedBlock)
 	}
 }

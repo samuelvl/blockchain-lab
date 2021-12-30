@@ -3,6 +3,7 @@ package blockchain
 import (
 	"bytes"
 	"crypto/sha256"
+	"encoding/gob"
 	"encoding/json"
 
 	"github.com/samuelvl/blockchain-lab/pkg/pow"
@@ -37,7 +38,7 @@ func NewBlock(data string, prevHash []byte) *Block {
 
 // FirstBlock returns the first block of the chain from the "Genesis" string.
 func FirstBlock() *Block {
-	return NewBlock("Genesis", []byte{})
+	return NewBlock("Genesis", nil)
 }
 
 // ComputeHash computes block's hash using the sha256 algorithm:
@@ -64,6 +65,30 @@ func (b *Block) Mine() error {
 	b.Hash = nonce.Payload
 	b.Nonce = nonce.Value
 
+	return nil
+}
+
+// Serialize converts a block in an slice of bytes. Implemented using the gob
+// library.
+func (b *Block) Serialize() ([]byte, error) {
+	buffer := new(bytes.Buffer)
+	serializer := gob.NewEncoder(buffer)
+	err := serializer.Encode(b)
+	if err != nil {
+		return nil, err
+	}
+	return buffer.Bytes(), nil
+}
+
+// Deserialize converts an slice of bytes in a block. Implemented using the gob
+// library.
+func (b *Block) Deserialize(data []byte) error {
+	buffer := bytes.NewBuffer(data)
+	serializer := gob.NewDecoder(buffer)
+	err := serializer.Decode(b)
+	if err != nil {
+		return err
+	}
 	return nil
 }
 

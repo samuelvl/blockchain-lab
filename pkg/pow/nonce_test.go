@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 // b64ToBytes converts an string in base64 into an slice of bytes.
@@ -73,6 +74,6 @@ func TestFindNonce(t *testing.T) {
 	for _, test := range tests {
 		nonce, err := FindNonce(test.data, test.difficulty)
 		assert.Equal(t, test.nonce, *nonce)
-		assert.NoError(t, err)
+		require.NoError(t, err)
 	}
 }

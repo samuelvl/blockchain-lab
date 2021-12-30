@@ -43,7 +43,10 @@ deps: update-deps download-deps
 
 test: ## Run unit tests.
 	$(info • Running unit tests...)
-	@go test -v -race ./pkg/...
+	@go test ./pkg/... -v \
+		-race \
+		-covermode=atomic -coverprofile=test/coverage.out \
+		-bench=^Benchmark.* -benchtime 5s -count 1
 
 
 ##@ Golang building

@@ -5,6 +5,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 // b64ToBytes converts an string in base64 into an slice of bytes.
@@ -22,7 +23,7 @@ func TestComputeHash(t *testing.T) {
 		{
 			block: Block{
 				Data:     "Genesis",
-				PrevHash: []byte{},
+				PrevHash: nil,
 			},
 			hash: b64ToBytes("gd3I0kiy3M3T/dXoTwytYrCPLRC1f5qDHBNFHlxcgKU="),
 		},
@@ -50,7 +51,7 @@ func TestNewBlock(t *testing.T) {
 			block: Block{
 				Hash:     b64ToBytes("AAAbYKPkOFcxWkh0z4iGQ20gkmRzC+9HuDRPynEPwhM="),
 				Data:     "Genesis",
-				PrevHash: []byte{},
+				PrevHash: nil,
 				Nonce:    668,
 			},
 		},
@@ -67,5 +68,34 @@ func TestNewBlock(t *testing.T) {
 	for _, test := range tests {
 		block := NewBlock(test.block.Data, test.block.PrevHash)
 		assert.Equal(t, test.block, *block)
+	}
+}
+
+// TestBlockSerialization test the serialization and deserialization of a block.
+func TestBlockSerialization(t *testing.T) {
+	var tests = []struct {
+		block Block
+	}{
+		{
+			block: Block{
+				Hash:     b64ToBytes("AAAbYKPkOFcxWkh0z4iGQ20gkmRzC+9HuDRPynEPwhM="),
+				Data:     "Genesis",
+				PrevHash: nil,
+				Nonce:    668,
+			},
+		},
+	}
+
+	for _, test := range tests {
+		// Serialize the block to test
+		serializedBlock, err := test.block.Serialize()
+		require.NoError(t, err)
+
+		// Deserialize the serialized block
+		deserializedBlock := Block{}
+		deserializedBlock.Deserialize(serializedBlock)
+
+		// Compare the deserialize with the original one
+		assert.Equal(t, test.block, deserializedBlock)
 	}
 }

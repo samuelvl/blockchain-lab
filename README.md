@@ -14,14 +14,13 @@ Then, generate your first block:
 
 ```shell
 $ make run
-Block:
-Chain size is 4 blocks
-Block 0 is:
+Chain has 4 blocks.
+Block 3 is:
 {
-  "hash": "AAAbYKPkOFcxWkh0z4iGQ20gkmRzC+9HuDRPynEPwhM=",
-  "data": "Genesis",
-  "prevHash": "",
-  "nonce": 668
+  "hash": "AADIiJwhbjrT0kJHMKZaVyffDJB44+HxiMEb6XjTl/o=",
+  "data": "third block after genesis",
+  "prevHash": "AACWgBRDSbaOrrPLg4Fk2XYh1YAWgdNntC8VZJ8Z4pQ=",
+  "nonce": 21680
 }
 ...
 ```

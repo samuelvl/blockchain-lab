@@ -17,10 +17,10 @@ $ make run
 Chain has 4 blocks.
 Block 3 is:
 {
-  "hash": "AADIiJwhbjrT0kJHMKZaVyffDJB44+HxiMEb6XjTl/o=",
-  "data": "third block after genesis",
-  "prevHash": "AACWgBRDSbaOrrPLg4Fk2XYh1YAWgdNntC8VZJ8Z4pQ=",
-  "nonce": 21680
+  "data": "dGhpcmQgYmxvY2sgYWZ0ZXIgZ2VuZXNpcw==",
+  "hash": "0000b9de761e9c4bb7a62b878811f897f96f9254579ebf2e818130a5a9633fd2",
+  "prevHash": "0000ca3dea3f51de88bcc8c4d42169450ce219655562a2b8a2a8444e83351eaa",
+  "nonce": 87333
 }
 ...
 ```

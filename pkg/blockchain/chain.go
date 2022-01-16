@@ -15,7 +15,7 @@ var ErrBlockNotFound = errors.New("blockchain: block not found")
 // Chain is the interface to be implemented by a blockchain backend.
 type Chain interface {
 	AddBlock(data []byte) (*Block, error)
-	GetBlock(hash []byte) (*Block, error)
+	GetBlock(hash string) (*Block, error)
 	GetLastBlock() (*Block, error)
 	Destroy() error
 	Length() uint64
@@ -25,7 +25,7 @@ type Chain interface {
 // ChainIterator can be used to iterate through the blockchain using the Next()
 // method.
 type ChainIterator struct {
-	currentHash []byte
+	currentHash string
 	chain       Chain
 }
 
@@ -59,14 +59,14 @@ func (chain *SliceChain) AddBlock(data []byte) (*Block, error) {
 
 // GetBlock finds and returns a block from its hash. If block is not found,
 // ErrBlockNotFound is returned.
-func (chain *SliceChain) GetBlock(hash []byte) (*Block, error) {
+func (chain *SliceChain) GetBlock(hash string) (*Block, error) {
 	// Avoid race conditions while iterating blocks
 	chain.Lock()
 	defer chain.Unlock()
 
 	// Iterate the slice of blocks and return the block matching the hash
 	for _, block := range chain.Blocks {
-		if bytes.Compare(hash, block.Hash) == 0 {
+		if hash == block.Hash {
 			return block, nil
 		}
 	}
@@ -163,7 +163,7 @@ func NewBadgerChain(dir string) (*BadgerChain, error) {
 
 		// Add the Genesis block to the chain
 		err = txn.SetEntry(
-			badger.NewEntry(firstBlock.Hash, firstBlockBytes))
+			badger.NewEntry([]byte(firstBlock.Hash), firstBlockBytes))
 		if err != nil {
 			return nil, err
 		}
@@ -217,7 +217,7 @@ func (chain *BadgerChain) AddBlock(data []byte) (*Block, error) {
 	}
 
 	// Add the new block to the database
-	err = txn.SetEntry(badger.NewEntry(block.Hash, blockBytes))
+	err = txn.SetEntry(badger.NewEntry([]byte(block.Hash), blockBytes))
 	if err != nil {
 		return nil, err
 	}
@@ -239,14 +239,14 @@ func (chain *BadgerChain) AddBlock(data []byte) (*Block, error) {
 
 // GetBlock finds and returns a block from its hash. If block is not found,
 // ErrBlockNotFound is returned.
-func (chain *BadgerChain) GetBlock(hash []byte) (*Block, error) {
+func (chain *BadgerChain) GetBlock(hash string) (*Block, error) {
 	// Create a new read-only badger transaction
 	txn := chain.db.NewTransaction(false)
 	defer txn.Discard()
 
 	// Find the block in the database
 	var block Block
-	blockBytes, err := txn.Get(hash)
+	blockBytes, err := txn.Get([]byte(hash))
 	if err != nil {
 		return nil, ErrBlockNotFound
 	}
@@ -266,7 +266,7 @@ func (chain *BadgerChain) GetBlock(hash []byte) (*Block, error) {
 
 // GetLastBlock returns the last block of the chain.
 func (chain *BadgerChain) GetLastBlock() (*Block, error) {
-	lastBlock, err := chain.GetBlock(chain.lastBlockKey)
+	lastBlock, err := chain.GetBlock(string(chain.lastBlockKey))
 	if err != nil {
 		return nil, err
 	}
@@ -339,5 +339,5 @@ func (iterator *ChainIterator) Next() (*Block, error) {
 
 // HasNext chechks if the blockchain has remanining blocks.
 func (iterator *ChainIterator) HasNext() bool {
-	return iterator.currentHash != nil
+	return iterator.currentHash != ""
 }

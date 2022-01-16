@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"crypto/sha256"
 	"encoding/gob"
+	"encoding/hex"
 	"encoding/json"
 
 	"github.com/samuelvl/blockchain-lab/pkg/pow"
@@ -17,17 +18,17 @@ const Difficulty uint = 16
 // its corresponding hash and the hash from the previous block.
 // The previous hash will be empty if it is the first block of the chain.
 type Block struct {
-	Hash     []byte `json:"hash"`
 	Data     []byte `json:"data"`
-	PrevHash []byte `json:"prevHash"`
+	Hash     string `json:"hash"`
+	PrevHash string `json:"prevHash"`
 	Nonce    int32  `json:"nonce"`
 }
 
 // NewBlock returns a block with its corresponding hash.
-func NewBlock(data []byte, prevHash []byte) *Block {
+func NewBlock(data []byte, prevHash string) *Block {
 	block := Block{
-		Hash:     []byte{},
 		Data:     data,
+		Hash:     "",
 		PrevHash: prevHash,
 		Nonce:    0,
 	}
@@ -38,7 +39,7 @@ func NewBlock(data []byte, prevHash []byte) *Block {
 
 // FirstBlock returns the first block of the chain from the "Genesis" string.
 func FirstBlock() *Block {
-	return NewBlock([]byte("Genesis"), nil)
+	return NewBlock([]byte("Genesis"), "")
 }
 
 // ComputeHash computes block's hash using the sha256 algorithm:
@@ -48,21 +49,21 @@ func (b *Block) ComputeHash() {
 	// hash, this is join[data, padding, prevHash]. No padding is added between
 	// the data and the previous hash.
 	padding := []byte{}
-	payload := bytes.Join([][]byte{b.Data, b.PrevHash}, padding)
+	payload := bytes.Join([][]byte{b.Data, []byte(b.PrevHash)}, padding)
 
 	// Set the hash value as the sha256 of the payload
 	hash := sha256.Sum256(payload)
-	b.Hash = hash[:]
+	b.Hash = hex.EncodeToString(hash[:])
 }
 
 // Mine will recompute the block's hash using the Proof of Work "hashcat"
 // algorithm.
 func (b *Block) Mine() error {
-	nonce, err := pow.FindNonce(b.Hash, Difficulty)
+	nonce, err := pow.FindNonce([]byte(b.Hash), Difficulty)
 	if err != nil {
 		return err
 	}
-	b.Hash = nonce.Payload
+	b.Hash = hex.EncodeToString(nonce.Payload)
 	b.Nonce = nonce.Value
 
 	return nil

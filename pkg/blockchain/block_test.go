@@ -1,37 +1,30 @@
 package blockchain
 
 import (
-	"encoding/base64"
 	"testing"
 
 	"github.com/stretchr/testify/require"
 )
 
-// b64ToBytes converts an string in base64 into an slice of bytes.
-func b64ToBytes(s string) []byte {
-	hash, _ := base64.StdEncoding.DecodeString(s)
-	return hash
-}
-
 // TestComputeHash tests the resulting hash for a single block.
 func TestComputeHash(t *testing.T) {
 	var tests = []struct {
 		block Block
-		hash  []byte
+		hash  string
 	}{
 		{
 			block: Block{
 				Data:     []byte("Genesis"),
-				PrevHash: nil,
+				PrevHash: "",
 			},
-			hash: b64ToBytes("gd3I0kiy3M3T/dXoTwytYrCPLRC1f5qDHBNFHlxcgKU="),
+			hash: "81ddc8d248b2dccdd3fdd5e84f0cad62b08f2d10b57f9a831c13451e5c5c80a5",
 		},
 		{
 			block: Block{
 				Data:     []byte("this is a testing block"),
-				PrevHash: b64ToBytes("gd3I0kiy3M3T/dXoTwytYrCPLRC1f5qDHBNFHlxcgKU="),
+				PrevHash: "81ddc8d248b2dccdd3fdd5e84f0cad62b08f2d10b57f9a831c13451e5c5c80a5",
 			},
-			hash: b64ToBytes("xL2OQM8Z7a5QloweIkbbBv45sxtX/j4/84h5HmqQxUE="),
+			hash: "5546e8962b45ef7d89ec93e54162bca55129914c1766d2fb0c74492f1f9ec776",
 		},
 	}
 
@@ -48,18 +41,18 @@ func TestNewBlock(t *testing.T) {
 	}{
 		{
 			block: Block{
-				Hash:     b64ToBytes("AAAbYKPkOFcxWkh0z4iGQ20gkmRzC+9HuDRPynEPwhM="),
 				Data:     []byte("Genesis"),
-				PrevHash: nil,
-				Nonce:    668,
+				Hash:     "0000f5adf42baf5174fc801e930ab3d020b5d00218657e66df8f23419da9c3c1",
+				PrevHash: "",
+				Nonce:    205317,
 			},
 		},
 		{
 			block: Block{
-				Hash:     b64ToBytes("AACNcVOeoodFtxKewQsbSjmMNsSDtRzDNmedx1xaH3Y="),
 				Data:     []byte("this is a testing block"),
-				PrevHash: b64ToBytes("AAAbYKPkOFcxWkh0z4iGQ20gkmRzC+9HuDRPynEPwhM="),
-				Nonce:    157870,
+				Hash:     "00005bfbe5cfb03a5d9e729d884700ebaa1cf825d9be9790636d991d03b51e18",
+				PrevHash: "0000f5adf42baf5174fc801e930ab3d020b5d00218657e66df8f23419da9c3c1",
+				Nonce:    107902,
 			},
 		},
 	}
@@ -77,9 +70,9 @@ func TestBlockSerialization(t *testing.T) {
 	}{
 		{
 			block: Block{
-				Hash:     b64ToBytes("AAAbYKPkOFcxWkh0z4iGQ20gkmRzC+9HuDRPynEPwhM="),
 				Data:     []byte("Genesis"),
-				PrevHash: nil,
+				Hash:     "81ddc8d248b2dccdd3fdd5e84f0cad62b08f2d10b57f9a831c13451e5c5c80a5",
+				PrevHash: "",
 				Nonce:    668,
 			},
 		},

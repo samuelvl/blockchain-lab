@@ -14,13 +14,13 @@ import "github.com/samuelvl/blockchain-lab/pkg/blockchain"
   - [func NewBadgerChain(dir string) (*BadgerChain, error)](<#func-newbadgerchain>)
   - [func (chain *BadgerChain) AddBlock(data []byte) (*Block, error)](<#func-badgerchain-addblock>)
   - [func (chain *BadgerChain) Destroy() error](<#func-badgerchain-destroy>)
-  - [func (chain *BadgerChain) GetBlock(hash []byte) (*Block, error)](<#func-badgerchain-getblock>)
+  - [func (chain *BadgerChain) GetBlock(hash string) (*Block, error)](<#func-badgerchain-getblock>)
   - [func (chain *BadgerChain) GetLastBlock() (*Block, error)](<#func-badgerchain-getlastblock>)
   - [func (chain *BadgerChain) Length() uint64](<#func-badgerchain-length>)
   - [func (chain *BadgerChain) NewIterator() (*ChainIterator, error)](<#func-badgerchain-newiterator>)
 - [type Block](<#type-block>)
   - [func FirstBlock() *Block](<#func-firstblock>)
-  - [func NewBlock(data []byte, prevHash []byte) *Block](<#func-newblock>)
+  - [func NewBlock(data []byte, prevHash string) *Block](<#func-newblock>)
   - [func (b *Block) ComputeHash()](<#func-block-computehash>)
   - [func (b *Block) Deserialize(data []byte) error](<#func-block-deserialize>)
   - [func (b *Block) Mine() error](<#func-block-mine>)
@@ -34,7 +34,7 @@ import "github.com/samuelvl/blockchain-lab/pkg/blockchain"
   - [func NewSliceChain() (*SliceChain, error)](<#func-newslicechain>)
   - [func (chain *SliceChain) AddBlock(data []byte) (*Block, error)](<#func-slicechain-addblock>)
   - [func (chain *SliceChain) Destroy() error](<#func-slicechain-destroy>)
-  - [func (chain *SliceChain) GetBlock(hash []byte) (*Block, error)](<#func-slicechain-getblock>)
+  - [func (chain *SliceChain) GetBlock(hash string) (*Block, error)](<#func-slicechain-getblock>)
   - [func (chain *SliceChain) GetLastBlock() (*Block, error)](<#func-slicechain-getlastblock>)
   - [func (chain *SliceChain) Length() uint64](<#func-slicechain-length>)
   - [func (chain *SliceChain) NewIterator() (*ChainIterator, error)](<#func-slicechain-newiterator>)
@@ -93,7 +93,7 @@ Destroy removes all the blocks from the chain\.
 ### func \(\*BadgerChain\) [GetBlock](<https://github.com/samuelvl/blockchain-lab/blob/main/pkg/blockchain/chain.go#L242>)
 
 ```go
-func (chain *BadgerChain) GetBlock(hash []byte) (*Block, error)
+func (chain *BadgerChain) GetBlock(hash string) (*Block, error)
 ```
 
 GetBlock finds and returns a block from its hash\. If block is not found\, ErrBlockNotFound is returned\.
@@ -122,20 +122,20 @@ func (chain *BadgerChain) NewIterator() (*ChainIterator, error)
 
 NewIterator initializes the blockchain iterator from the last block\.
 
-## type [Block](<https://github.com/samuelvl/blockchain-lab/blob/main/pkg/blockchain/block.go#L19-L24>)
+## type [Block](<https://github.com/samuelvl/blockchain-lab/blob/main/pkg/blockchain/block.go#L20-L25>)
 
 Block represents the simplest element of the chain\. It stores some data\, its corresponding hash and the hash from the previous block\. The previous hash will be empty if it is the first block of the chain\.
 
 ```go
 type Block struct {
-    Hash     []byte `json:"hash"`
     Data     []byte `json:"data"`
-    PrevHash []byte `json:"prevHash"`
+    Hash     string `json:"hash"`
+    PrevHash string `json:"prevHash"`
     Nonce    int32  `json:"nonce"`
 }
 ```
 
-### func [FirstBlock](<https://github.com/samuelvl/blockchain-lab/blob/main/pkg/blockchain/block.go#L40>)
+### func [FirstBlock](<https://github.com/samuelvl/blockchain-lab/blob/main/pkg/blockchain/block.go#L41>)
 
 ```go
 func FirstBlock() *Block
@@ -143,15 +143,15 @@ func FirstBlock() *Block
 
 FirstBlock returns the first block of the chain from the "Genesis" string\.
 
-### func [NewBlock](<https://github.com/samuelvl/blockchain-lab/blob/main/pkg/blockchain/block.go#L27>)
+### func [NewBlock](<https://github.com/samuelvl/blockchain-lab/blob/main/pkg/blockchain/block.go#L28>)
 
 ```go
-func NewBlock(data []byte, prevHash []byte) *Block
+func NewBlock(data []byte, prevHash string) *Block
 ```
 
 NewBlock returns a block with its corresponding hash\.
 
-### func \(\*Block\) [ComputeHash](<https://github.com/samuelvl/blockchain-lab/blob/main/pkg/blockchain/block.go#L46>)
+### func \(\*Block\) [ComputeHash](<https://github.com/samuelvl/blockchain-lab/blob/main/pkg/blockchain/block.go#L47>)
 
 ```go
 func (b *Block) ComputeHash()
@@ -159,7 +159,7 @@ func (b *Block) ComputeHash()
 
 ComputeHash computes block's hash using the sha256 algorithm: https://datatracker.ietf.org/doc/html/rfc6234
 
-### func \(\*Block\) [Deserialize](<https://github.com/samuelvl/blockchain-lab/blob/main/pkg/blockchain/block.go#L85>)
+### func \(\*Block\) [Deserialize](<https://github.com/samuelvl/blockchain-lab/blob/main/pkg/blockchain/block.go#L86>)
 
 ```go
 func (b *Block) Deserialize(data []byte) error
@@ -167,7 +167,7 @@ func (b *Block) Deserialize(data []byte) error
 
 Deserialize converts an slice of bytes in a block\. Implemented using the gob library\.
 
-### func \(\*Block\) [Mine](<https://github.com/samuelvl/blockchain-lab/blob/main/pkg/blockchain/block.go#L60>)
+### func \(\*Block\) [Mine](<https://github.com/samuelvl/blockchain-lab/blob/main/pkg/blockchain/block.go#L61>)
 
 ```go
 func (b *Block) Mine() error
@@ -175,7 +175,7 @@ func (b *Block) Mine() error
 
 Mine will recompute the block's hash using the Proof of Work "hashcat" algorithm\.
 
-### func \(\*Block\) [Serialize](<https://github.com/samuelvl/blockchain-lab/blob/main/pkg/blockchain/block.go#L73>)
+### func \(\*Block\) [Serialize](<https://github.com/samuelvl/blockchain-lab/blob/main/pkg/blockchain/block.go#L74>)
 
 ```go
 func (b *Block) Serialize() ([]byte, error)
@@ -183,7 +183,7 @@ func (b *Block) Serialize() ([]byte, error)
 
 Serialize converts a block in an slice of bytes\. Implemented using the gob library\.
 
-### func \(Block\) [String](<https://github.com/samuelvl/blockchain-lab/blob/main/pkg/blockchain/block.go#L96>)
+### func \(Block\) [String](<https://github.com/samuelvl/blockchain-lab/blob/main/pkg/blockchain/block.go#L97>)
 
 ```go
 func (b Block) String() string
@@ -198,7 +198,7 @@ Chain is the interface to be implemented by a blockchain backend\.
 ```go
 type Chain interface {
     AddBlock(data []byte) (*Block, error)
-    GetBlock(hash []byte) (*Block, error)
+    GetBlock(hash string) (*Block, error)
     GetLastBlock() (*Block, error)
     Destroy() error
     Length() uint64
@@ -270,7 +270,7 @@ Destroy removes all the blocks from the chain\.
 ### func \(\*SliceChain\) [GetBlock](<https://github.com/samuelvl/blockchain-lab/blob/main/pkg/blockchain/chain.go#L62>)
 
 ```go
-func (chain *SliceChain) GetBlock(hash []byte) (*Block, error)
+func (chain *SliceChain) GetBlock(hash string) (*Block, error)
 ```
 
 GetBlock finds and returns a block from its hash\. If block is not found\, ErrBlockNotFound is returned\.

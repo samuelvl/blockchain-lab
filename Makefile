@@ -71,4 +71,5 @@ run: ## Run the app locally.
 
 docs: ## Generate documentation using gomarkdoc tool.
 	$(info • Generating code documentation...)
+	@rm -rf docs/pkg/*
 	@gomarkdoc --output 'docs/{{.Dir}}/GODOC.md' ./pkg/...

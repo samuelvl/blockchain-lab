@@ -19,10 +19,10 @@ type ChainTestSuite struct {
 func (suite *ChainTestSuite) SetupSuite() {
 	suite.numOfBlocks = 10
 	suite.genesisBlock = Block{
-		Hash:     b64ToBytes("AAAbYKPkOFcxWkh0z4iGQ20gkmRzC+9HuDRPynEPwhM="),
 		Data:     []byte("Genesis"),
-		PrevHash: nil,
-		Nonce:    668,
+		Hash:     "0000f5adf42baf5174fc801e930ab3d020b5d00218657e66df8f23419da9c3c1",
+		PrevHash: "",
+		Nonce:    205317,
 	}
 }
 
@@ -57,7 +57,7 @@ func (suite *ChainTestSuite) TestAddBlock() {
 // TestErrBlockNotFound checks the error returned when a block is not found.
 func (suite *ChainTestSuite) TestErrBlockNotFound() {
 	// Find a non-existent block in the blockchain
-	_, err := suite.chain.GetBlock([]byte("oblivion"))
+	_, err := suite.chain.GetBlock("oblivion")
 	require.Error(suite.T(), err)
 	require.Equal(suite.T(), ErrBlockNotFound, err)
 }

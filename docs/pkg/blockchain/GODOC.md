@@ -12,7 +12,7 @@ import "github.com/samuelvl/blockchain-lab/pkg/blockchain"
 - [Variables](<#variables>)
 - [type BadgerChain](<#type-badgerchain>)
   - [func NewBadgerChain(dir string) (*BadgerChain, error)](<#func-newbadgerchain>)
-  - [func (chain *BadgerChain) AddBlock(data string) (*Block, error)](<#func-badgerchain-addblock>)
+  - [func (chain *BadgerChain) AddBlock(data []byte) (*Block, error)](<#func-badgerchain-addblock>)
   - [func (chain *BadgerChain) Destroy() error](<#func-badgerchain-destroy>)
   - [func (chain *BadgerChain) GetBlock(hash []byte) (*Block, error)](<#func-badgerchain-getblock>)
   - [func (chain *BadgerChain) GetLastBlock() (*Block, error)](<#func-badgerchain-getlastblock>)
@@ -20,7 +20,7 @@ import "github.com/samuelvl/blockchain-lab/pkg/blockchain"
   - [func (chain *BadgerChain) NewIterator() (*ChainIterator, error)](<#func-badgerchain-newiterator>)
 - [type Block](<#type-block>)
   - [func FirstBlock() *Block](<#func-firstblock>)
-  - [func NewBlock(data string, prevHash []byte) *Block](<#func-newblock>)
+  - [func NewBlock(data []byte, prevHash []byte) *Block](<#func-newblock>)
   - [func (b *Block) ComputeHash()](<#func-block-computehash>)
   - [func (b *Block) Deserialize(data []byte) error](<#func-block-deserialize>)
   - [func (b *Block) Mine() error](<#func-block-mine>)
@@ -32,7 +32,7 @@ import "github.com/samuelvl/blockchain-lab/pkg/blockchain"
   - [func (iterator *ChainIterator) Next() (*Block, error)](<#func-chainiterator-next>)
 - [type SliceChain](<#type-slicechain>)
   - [func NewSliceChain() (*SliceChain, error)](<#func-newslicechain>)
-  - [func (chain *SliceChain) AddBlock(data string) (*Block, error)](<#func-slicechain-addblock>)
+  - [func (chain *SliceChain) AddBlock(data []byte) (*Block, error)](<#func-slicechain-addblock>)
   - [func (chain *SliceChain) Destroy() error](<#func-slicechain-destroy>)
   - [func (chain *SliceChain) GetBlock(hash []byte) (*Block, error)](<#func-slicechain-getblock>)
   - [func (chain *SliceChain) GetLastBlock() (*Block, error)](<#func-slicechain-getlastblock>)
@@ -77,7 +77,7 @@ NewBadgerChain initializes a blockchain to store blocks in a Badger database\. I
 ### func \(\*BadgerChain\) [AddBlock](<https://github.com/samuelvl/blockchain-lab/blob/main/pkg/blockchain/chain.go#L189>)
 
 ```go
-func (chain *BadgerChain) AddBlock(data string) (*Block, error)
+func (chain *BadgerChain) AddBlock(data []byte) (*Block, error)
 ```
 
 AddBlock adds a new block to the chain from the input data\.
@@ -124,12 +124,12 @@ NewIterator initializes the blockchain iterator from the last block\.
 
 ## type [Block](<https://github.com/samuelvl/blockchain-lab/blob/main/pkg/blockchain/block.go#L19-L24>)
 
-Block represents the simplest element of the chain\. It contains an string\, its corresponding hash and the hash from the previous block\. The previous hash will be empty if it is the first block of the chain\.
+Block represents the simplest element of the chain\. It stores some data\, its corresponding hash and the hash from the previous block\. The previous hash will be empty if it is the first block of the chain\.
 
 ```go
 type Block struct {
     Hash     []byte `json:"hash"`
-    Data     string `json:"data"`
+    Data     []byte `json:"data"`
     PrevHash []byte `json:"prevHash"`
     Nonce    int32  `json:"nonce"`
 }
@@ -146,7 +146,7 @@ FirstBlock returns the first block of the chain from the "Genesis" string\.
 ### func [NewBlock](<https://github.com/samuelvl/blockchain-lab/blob/main/pkg/blockchain/block.go#L27>)
 
 ```go
-func NewBlock(data string, prevHash []byte) *Block
+func NewBlock(data []byte, prevHash []byte) *Block
 ```
 
 NewBlock returns a block with its corresponding hash\.
@@ -197,7 +197,7 @@ Chain is the interface to be implemented by a blockchain backend\.
 
 ```go
 type Chain interface {
-    AddBlock(data string) (*Block, error)
+    AddBlock(data []byte) (*Block, error)
     GetBlock(hash []byte) (*Block, error)
     GetLastBlock() (*Block, error)
     Destroy() error
@@ -254,7 +254,7 @@ NewSliceChain initializes a blockchain to store blocks in an slice of blocks\. I
 ### func \(\*SliceChain\) [AddBlock](<https://github.com/samuelvl/blockchain-lab/blob/main/pkg/blockchain/chain.go#L48>)
 
 ```go
-func (chain *SliceChain) AddBlock(data string) (*Block, error)
+func (chain *SliceChain) AddBlock(data []byte) (*Block, error)
 ```
 
 AddBlock adds a new block to the chain from the input data\.

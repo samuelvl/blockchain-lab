@@ -13,18 +13,18 @@ import (
 // the harder to find a nonce.
 const Difficulty uint = 16
 
-// Block represents the simplest element of the chain. It contains an string,
+// Block represents the simplest element of the chain. It stores some data,
 // its corresponding hash and the hash from the previous block.
 // The previous hash will be empty if it is the first block of the chain.
 type Block struct {
 	Hash     []byte `json:"hash"`
-	Data     string `json:"data"`
+	Data     []byte `json:"data"`
 	PrevHash []byte `json:"prevHash"`
 	Nonce    int32  `json:"nonce"`
 }
 
 // NewBlock returns a block with its corresponding hash.
-func NewBlock(data string, prevHash []byte) *Block {
+func NewBlock(data []byte, prevHash []byte) *Block {
 	block := Block{
 		Hash:     []byte{},
 		Data:     data,
@@ -38,7 +38,7 @@ func NewBlock(data string, prevHash []byte) *Block {
 
 // FirstBlock returns the first block of the chain from the "Genesis" string.
 func FirstBlock() *Block {
-	return NewBlock("Genesis", nil)
+	return NewBlock([]byte("Genesis"), nil)
 }
 
 // ComputeHash computes block's hash using the sha256 algorithm:
@@ -48,7 +48,7 @@ func (b *Block) ComputeHash() {
 	// hash, this is join[data, padding, prevHash]. No padding is added between
 	// the data and the previous hash.
 	padding := []byte{}
-	payload := bytes.Join([][]byte{[]byte(b.Data), b.PrevHash}, padding)
+	payload := bytes.Join([][]byte{b.Data, b.PrevHash}, padding)
 
 	// Set the hash value as the sha256 of the payload
 	hash := sha256.Sum256(payload)

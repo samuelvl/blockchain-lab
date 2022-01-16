@@ -14,7 +14,7 @@ var ErrBlockNotFound = errors.New("blockchain: block not found")
 
 // Chain is the interface to be implemented by a blockchain backend.
 type Chain interface {
-	AddBlock(data string) (*Block, error)
+	AddBlock(data []byte) (*Block, error)
 	GetBlock(hash []byte) (*Block, error)
 	GetLastBlock() (*Block, error)
 	Destroy() error
@@ -45,7 +45,7 @@ func NewSliceChain() (*SliceChain, error) {
 }
 
 // AddBlock adds a new block to the chain from the input data.
-func (chain *SliceChain) AddBlock(data string) (*Block, error) {
+func (chain *SliceChain) AddBlock(data []byte) (*Block, error) {
 	// Avoid race conditions while adding new blocks
 	chain.Lock()
 	defer chain.Unlock()
@@ -186,7 +186,7 @@ func NewBadgerChain(dir string) (*BadgerChain, error) {
 }
 
 // AddBlock adds a new block to the chain from the input data.
-func (chain *BadgerChain) AddBlock(data string) (*Block, error) {
+func (chain *BadgerChain) AddBlock(data []byte) (*Block, error) {
 	// Create a new read-write badger transaction
 	txn := chain.db.NewTransaction(true)
 	defer txn.Discard()

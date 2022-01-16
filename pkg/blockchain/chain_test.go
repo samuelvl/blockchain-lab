@@ -20,7 +20,7 @@ func (suite *ChainTestSuite) SetupSuite() {
 	suite.numOfBlocks = 10
 	suite.genesisBlock = Block{
 		Hash:     b64ToBytes("AAAbYKPkOFcxWkh0z4iGQ20gkmRzC+9HuDRPynEPwhM="),
-		Data:     "Genesis",
+		Data:     []byte("Genesis"),
 		PrevHash: nil,
 		Nonce:    668,
 	}
@@ -42,7 +42,7 @@ func (suite *ChainTestSuite) TestAddBlock() {
 	// Add blocks to the blockchain
 	for i := uint64(0); i < suite.numOfBlocks; i++ {
 		// Add the block to the database
-		newBlock, err := suite.chain.AddBlock("this is a testing block")
+		newBlock, err := suite.chain.AddBlock([]byte("this is a testing block"))
 		require.NoError(suite.T(), err)
 
 		// Retrieve the block from the database

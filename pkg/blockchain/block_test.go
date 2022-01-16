@@ -21,14 +21,14 @@ func TestComputeHash(t *testing.T) {
 	}{
 		{
 			block: Block{
-				Data:     "Genesis",
+				Data:     []byte("Genesis"),
 				PrevHash: nil,
 			},
 			hash: b64ToBytes("gd3I0kiy3M3T/dXoTwytYrCPLRC1f5qDHBNFHlxcgKU="),
 		},
 		{
 			block: Block{
-				Data:     "this is a testing block",
+				Data:     []byte("this is a testing block"),
 				PrevHash: b64ToBytes("gd3I0kiy3M3T/dXoTwytYrCPLRC1f5qDHBNFHlxcgKU="),
 			},
 			hash: b64ToBytes("xL2OQM8Z7a5QloweIkbbBv45sxtX/j4/84h5HmqQxUE="),
@@ -49,7 +49,7 @@ func TestNewBlock(t *testing.T) {
 		{
 			block: Block{
 				Hash:     b64ToBytes("AAAbYKPkOFcxWkh0z4iGQ20gkmRzC+9HuDRPynEPwhM="),
-				Data:     "Genesis",
+				Data:     []byte("Genesis"),
 				PrevHash: nil,
 				Nonce:    668,
 			},
@@ -57,7 +57,7 @@ func TestNewBlock(t *testing.T) {
 		{
 			block: Block{
 				Hash:     b64ToBytes("AACNcVOeoodFtxKewQsbSjmMNsSDtRzDNmedx1xaH3Y="),
-				Data:     "this is a testing block",
+				Data:     []byte("this is a testing block"),
 				PrevHash: b64ToBytes("AAAbYKPkOFcxWkh0z4iGQ20gkmRzC+9HuDRPynEPwhM="),
 				Nonce:    157870,
 			},
@@ -78,7 +78,7 @@ func TestBlockSerialization(t *testing.T) {
 		{
 			block: Block{
 				Hash:     b64ToBytes("AAAbYKPkOFcxWkh0z4iGQ20gkmRzC+9HuDRPynEPwhM="),
-				Data:     "Genesis",
+				Data:     []byte("Genesis"),
 				PrevHash: nil,
 				Nonce:    668,
 			},

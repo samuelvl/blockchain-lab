@@ -8,9 +8,9 @@ import (
 
 func main() {
 	chain, _ := blockchain.NewBadgerChain("/tmp/blockchain")
-	chain.AddBlock("first block after genesis")
-	chain.AddBlock("second block after genesis")
-	chain.AddBlock("third block after genesis")
+	chain.AddBlock([]byte("first block after genesis"))
+	chain.AddBlock([]byte("second block after genesis"))
+	chain.AddBlock([]byte("third block after genesis"))
 
 	fmt.Printf("Chain has %d blocks.\n", chain.Length())
 
